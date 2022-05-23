@@ -15,8 +15,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Common Resources Routes
+// index - show all listings
+// show - show single listing
+// create - show form to create new listing
+// store - save new listing
+// edit - show form to edit listing
+// update - save edited listing
+// destroy - delete listing
+
+
 // All Listings
 Route::get('/', [ListingController::class, 'index']);
+
+// Show Create form
+Route::get('/listing/create', [ListingController::class, 'create']);
+
+// Store Listing Data
+Route::post('/listing', [ListingController::class, 'store']);
 
 // Single Listing
 Route::get('/listing/{listing}', [ListingController::class, 'show']);

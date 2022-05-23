@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8" />
@@ -46,8 +47,9 @@
         class="bg-laravel fixed bottom-0 left-0 mt-24 flex h-24 w-full items-center justify-start font-bold text-white opacity-90 md:justify-center">
         <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
 
-        <a href="create.html" class="absolute top-1/3 right-10 bg-black py-2 px-5 text-white">Post Job</a>
+        <a href="/listing/create" class="absolute top-1/3 right-10 bg-black py-2 px-5 text-white">Post Job</a>
     </footer>
+    <x-flash-message />
 </body>
 
 </html>
