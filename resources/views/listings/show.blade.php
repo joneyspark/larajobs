@@ -4,7 +4,9 @@
     <div class="mx-4">
         <x-card class="10">
             <div class="flex flex-col items-center justify-center text-center">
-                <img class="mr-6 mb-6 w-48" src="{{ asset('images/acme.png') }}" alt="" />
+                <img class="mr-6 mb-6 w-48"
+                    src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('images/no-image.png') }}"
+                    alt="" />
 
                 <h3 class="mb-2 text-2xl">{{ $listing->title }}</h3>
                 <div class="mb-4 text-xl font-bold">{{ $listing->company }}</div>
@@ -32,6 +34,17 @@
                     </div>
                 </div>
             </div>
+        </x-card>
+        <x-card class="mt-4 flex space-x-6 p-2">
+            <a href="/listing/{{ $listing->id }}/edit">
+                <i class="fa-solid fa-edit"></i> Edit
+            </a>
+            <form action="/listing/{{ $listing->id }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-red-600">
+                    <i class="fa-solid fa-trash"></i> Delete
+                </button>
         </x-card>
     </div>
 </x-layout>

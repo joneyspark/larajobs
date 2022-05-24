@@ -13,7 +13,7 @@ class ListingController extends Controller
     {
 
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(4)
         ]);
     }
 
@@ -44,8 +44,51 @@ class ListingController extends Controller
             'tags' => 'required'
         ]);
 
+        if ($request->hasFile('logo')) {
+            $validateData['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
         Listing::create($validateData);
-        
+
         return redirect('/')->with('message', 'Your listing has been created');
+    }
+
+    // show edit form
+    public function edit(Listing $listing)
+    {
+        return view('listings.edit', [
+            'listing' => $listing
+        ]);
+    }
+
+    // update form
+
+    public function update(Request $request, Listing $listing)
+    {
+        $validateData = $request->validate([
+            'title' => 'required',
+            'company' => ['required', Rule::unique('listings', 'company')->ignore($listing->id)],
+            'description' => 'required',
+            'website' => 'required',
+            'email' => ['required', 'email', Rule::unique('listings', 'email')->ignore($listing->id)],
+            'location' => 'required',
+            'tags' => 'required'
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $validateData['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $listing->update($validateData);
+
+        return back()->with('message', 'Listing Updated Successfully');
+    }
+
+    // delete form
+    public function destroy(Listing $listing)
+    {
+        $listing->delete();
+
+        return redirect('/')->with('message', 'Listing Deleted Successfully');
     }
 }
