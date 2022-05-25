@@ -60,10 +60,10 @@ class UserController extends Controller
         ]);
 
         if (auth()->attempt($validateData)) {
-            $request->session()->regenerateToken();
-            return redirect('/');
+            $request->session()->regenerate();
+            return redirect('/')->with('message', 'You are now logged in');
         }
 
-        return redirect('/login')->with('message', 'Invalid credentials');
+        return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
     }
 }

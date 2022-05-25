@@ -48,6 +48,8 @@ class ListingController extends Controller
             $validateData['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
+        $validateData['user_id'] = auth()->id();
+
         Listing::create($validateData);
 
         return redirect('/')->with('message', 'Your listing has been created');
@@ -56,8 +58,21 @@ class ListingController extends Controller
     // show edit form
     public function edit(Listing $listing)
     {
+        // make sure user owns listing
+        if (auth()->user()->id !== $listing->user_id) {
+            abort(403, 'You do not have permission to edit this listing');
+        }
+
         return view('listings.edit', [
             'listing' => $listing
+        ]);
+    }
+
+    // manage listing
+    public function manage()
+    {
+        return view('listings.manage', [
+            'listings' => auth()->user()->listings()->get()
         ]);
     }
 
@@ -65,6 +80,11 @@ class ListingController extends Controller
 
     public function update(Request $request, Listing $listing)
     {
+        // make sure user owns listing
+        if (auth()->user()->id !== $listing->user_id) {
+            abort(403, 'You do not have permission to edit this listing');
+        }
+
         $validateData = $request->validate([
             'title' => 'required',
             'company' => ['required', Rule::unique('listings', 'company')->ignore($listing->id)],
@@ -87,6 +107,10 @@ class ListingController extends Controller
     // delete form
     public function destroy(Listing $listing)
     {
+        // make sure user owns listing
+        if (auth()->user()->id !== $listing->user_id) {
+            abort(403, 'You do not have permission to edit this listing');
+        }
         $listing->delete();
 
         return redirect('/')->with('message', 'Listing Deleted Successfully');

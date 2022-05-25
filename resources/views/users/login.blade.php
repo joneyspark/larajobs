@@ -11,7 +11,10 @@
             @csrf
             <div class="mb-6">
                 <label for="email" class="mb-2 inline-block text-lg">Email</label>
-                <input type="email" value="{{ old('password') }}" class="w-full rounded border border-gray-200 p-2" name="email" />
+                <input type="email" value="{{ old('email') }}" class="w-full rounded border border-gray-200 p-2" name="email" />
+                @error('email')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-6">
@@ -19,6 +22,9 @@
                     Password
                 </label>
                 <input type="password" value="{{ old('password') }}" class="w-full rounded border border-gray-200 p-2" name="password" />
+                @error('password')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-6">

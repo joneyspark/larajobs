@@ -22,4 +22,10 @@ class Listing extends Model
             $query->where('title', 'like', '%' . $filters['search'] . '%')->orWhere('description', 'like', '%' . $filters['search'] . '%')->orWhere('tags', 'like', '%' . $filters['search'] . '%');
         }
     }
+
+    // Relationships with User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
